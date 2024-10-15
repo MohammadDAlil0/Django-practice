@@ -7,3 +7,4 @@ class Mutation:
     create_product       = resolvers.CreateProduct.Field()
     manage_favorites     = resolvers.ManageFavorites.Field()
     comment              = resolvers.Comment.Field()
+    register_user        = resolvers.RegisterUser.Field()

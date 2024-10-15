@@ -26,6 +26,32 @@ class CreateProductCategory(graphene.relay.ClientIDMutation):
             transaction.rollback()
         return CreateProductCategory(category=category)
 
+
+class RegisterUser(graphene.relay.ClientIDMutation):
+    class Input:
+        username = graphene.NonNull(graphene.String)
+        email = graphene.NonNull(graphene.String)
+        password = graphene.NonNull(graphene.String)
+
+    user = graphene.Field(node.UserNode)
+
+    @classmethod
+    def mutate_and_get_payload(cls, root, info, **input):
+        transaction.set_autocommit(False)
+        user = None
+        try:
+            if User.objects.filter(username=input.get("username")).exists():
+                raise Exception("Username already exists")
+            
+            user = User.objects.create_user(username=input.get("username"), password=input.get("pasword"))
+
+            user.save()
+            transaction.commit()
+            return RegisterUser(user=user)
+        except:
+            transaction.rollback()
+    
+
 class CreateProduct(graphene.relay.ClientIDMutation):
     class Input:
         name = graphene.NonNull(graphene.String)
