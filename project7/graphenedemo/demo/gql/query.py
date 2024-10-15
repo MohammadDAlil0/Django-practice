@@ -1,0 +1,17 @@
+import graphene
+
+import graphene_django.filter as filter
+
+import demo.gql.node as node
+
+class Query:
+    users   = filter.DjangoFilterConnectionField(node.UserNode)
+    user    = graphene.relay.Node.Field(node.UserNode)
+
+    products = filter.DjangoFilterConnectionField(node.ProductNode)
+    product  = graphene.relay.Node.Field(node.ProductNode)
+
+    comments = filter.DjangoFilterConnectionField(node.CommentNode)
+
+    product_categories  = filter.DjangoFilterConnectionField(node.ProductCategoryNode)
+    product_categorie   = graphene.relay.Node.Field(node.ProductCategoryNode)
